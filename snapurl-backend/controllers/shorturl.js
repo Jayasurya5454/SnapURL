@@ -3,20 +3,21 @@ const ShortUrl = require("../models/shorturl");
 const QRCode = require("qrcode");
 
 module.exports.createShortUrl = async (req, res) => {
-    const { originalUrl, customName } = req.body;
+    const { originalUrl, customName} = req.body;
     const shortUrl = customName ? customName : Math.random().toString(36).substr(2, 5);
 
     try {
-        const existing = await ShortUrl.findOne({ shortUrl });
-        if (existing) {
-            return res.status(200).json({ shortUrl: existing.shortUrl });
-        }
+        if (customName) {
+            const existingCustomName = await ShortUrl.findOne({ shortUrl: customName });
+            if (existingCustomName) {
+                return res.status(400).json({ message: "Custom name already in use so try another name" });
+            }
+        }        
 
         const qrcode = await QRCode.toDataURL(originalUrl);
 
         const newShortUrl = new ShortUrl({
             originalUrl,
-            customName,
             shortUrl,
             qrcode,
             createdBy: req.user ? req.user._id : null, 
