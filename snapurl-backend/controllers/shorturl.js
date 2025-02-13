@@ -57,7 +57,7 @@ module.exports.getShortUrl = async (req, res) => {
     
         if (shortUrlEntry.password) {
           if (!password) {
-            return res.redirect('https://snapurls.onrender.com/validate');
+            return res.redirect('https://snappedurl.netlify.app/validate');
         }
           const isPasswordValid = await bcrypt.compare(password, shortUrlEntry.password);
           if (!isPasswordValid) {
