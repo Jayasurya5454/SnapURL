@@ -10,9 +10,7 @@ app.use(cors());
 app.use(express.json());
 const cron = require('node-cron');
 
-cron.schedule('*/10 * * * *', () => {
-    console.log('Running task every 1 minutes');
-});
+
 
 
 app.use('/api/health', ()=> {

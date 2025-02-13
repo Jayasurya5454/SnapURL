@@ -1,72 +1,258 @@
-import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './Dashboard.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import backgroundImage from "../../assets/backgroundUrl.png";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
-    const [url, setUrl] = useState('');
-    const [customName, setCustomName] = useState('');
+    const [formData, setFormData] = useState({
+        originalUrl: "",
+        customName: "",
+        password: "",
+        maxClicks: "",
+    });
 
-    const handleSubmit = (e) => {
+    const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        // Prevent spaces in custom alias
+        if (name === "customName" && /\s/.test(value)) {
+            toast.error("Custom alias cannot contain spaces.", { autoClose: 3000 });
+            return;
+        }
+
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("URL:", url, "Custom Name:", customName);
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shortUrl`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                toast.success("SnapURL created successfully!", { autoClose: 1000 });
+                setTimeout(() => {
+                    navigate("/result", { state: { shortUrl: result.shortUrl, qrCode: result.qrcode } });
+                }, 3000);
+            } else if (result.message === "Custom name already in use. Try another name.") {
+                toast.error("Custom alias already exists! Please choose another alias.", { autoClose: 4000 });
+            } else {
+                toast.error(result.message || "An error occurred.", { autoClose: 3000 });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            toast.error("Failed to connect to the server.", { autoClose: 3000 });
+        }
     };
 
     return (
-        <div className="dashboard-container">
-            <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-                <form
-                    className="bg-white p-5 rounded shadow-lg"
-                    style={{ maxWidth: "500px", width: "100%" }}
-                    onSubmit={handleSubmit}
+        <div
+            style={{
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                minHeight: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "#fff",
+                fontFamily: "Arial, sans-serif",
+            }}
+        >
+            <Container
+                fluid
+                className="text-white vh-100 d-flex justify-content-center align-items-center"
+                style={{
+                    zIndex: 2,
+                }}
+            >
+                <Row
+                    className="p-5 rounded shadow"
+                    style={{
+                        width: "80%",
+                        maxWidth: "500px",
+                    }}
                 >
-                    <h2 className="text-center text-primary mb-4 position-relative">
-                        Dashboard
-                        <span
-                            className="position-absolute rounded-circle  "
+                    <Col>
+                        <h3
+                            className="text-center mb-4"
                             style={{
-                                width: "16px",
-                                height: "16px",
-                                top: "50%",
-                                left: "-20px",
-                                transform: "translateY(-50%)",
+                                fontWeight: "800",
+                                fontSize: "2.2rem",
+                                letterSpacing: "0.05em",
+                                textTransform: "uppercase",
                             }}
-                        ></span>
-                    </h2>
-                    <p className="text-muted text-center mb-4">
-                        Enter the URL and a custom name to generate your shortened link.
-                    </p>
-                    <div className="form-floating mb-3">
-                        <input
-                            type="url"
-                            id="url"
-                            className="form-control"
-                            placeholder="Enter URL"
-                            value={url}
-                            onChange={(e) => setUrl(e.target.value)}
-                            required
-                        />
-                        <label htmlFor="url">URL</label>
-                    </div>
-                    <div className="form-floating mb-4">
-                        <input
-                            type="text"
-                            id="customName"
-                            className="form-control"
-                            placeholder="Custom Name"
-                            value={customName}
-                            onChange={(e) => setCustomName(e.target.value)}
-                            required
-                        />
-                        <label htmlFor="customName">Custom Name</label>
-                    </div>
-                    <button type="submit" className="btn btn-success w-100">
-                        Generate Shortened URL
-                    </button>
-                    <p className="text-center text-muted mt-4">
-                        Need help? <a href="/help" className="text-primary">Contact Support</a>
-                    </p>
-                </form>
-            </div>
+                        >
+                            SnapURL
+                        </h3>
+                        <Form onSubmit={handleSubmit}>
+                            {/* Long URL Field */}
+                            <Form.Group className="mb-3">
+                                <Form.Label
+                                    style={{
+                                        color: "#f0f0f0",
+                                        fontWeight: "100",
+                                        fontSize: "1rem",
+                                        letterSpacing: "0.06em",
+                                        textTransform: "uppercase",
+                                    }}
+                                >
+                                    Enter your long URL
+                                </Form.Label>
+                                <Form.Control
+                                    type="url"
+                                    name="originalUrl"
+                                    placeholder="https://your-long-url.com"
+                                    value={formData.originalUrl}
+                                    onChange={handleChange}
+                                    required
+                                    style={{
+                                        flex: 1,
+                                        background: "rgba(255, 255, 255, 0.1)",
+                                        border: "1px solid #fff",
+                                        color: "#2e4053",
+                                        fontWeight: "700",
+                                        fontSize: "16px",
+                                        outline: "none",
+                                        padding: "10px",
+                                        borderRadius: "8px",
+                                    }}
+                                />
+                            </Form.Group>
+
+                            {/* Custom Alias Field */}
+                            <Form.Group className="mb-3">
+                                <Form.Label
+                                    style={{
+                                        color: "#f0f0f0",
+                                        fontWeight: "100",
+                                        fontSize: "1rem",
+                                        letterSpacing: "0.06em",
+                                        textTransform: "uppercase",
+                                    }}
+                                >
+                                    Custom Alias
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="customName"
+                                    value={formData.customName}
+                                    onChange={handleChange}
+                                    style={{
+                                        background: "rgba(255, 255, 255, 0.1)",
+                                        border: "1px solid #fff",
+                                        color: "#2e4053",
+                                        fontWeight: "700",
+                                        fontSize: "16px",
+                                        outline: "none",
+                                        padding: "10px",
+                                        borderRadius: "8px",
+                                    }}
+                                />
+                                <Form.Text className="text-muted text-light">
+                                    Leave blank for random URL slug.
+                                </Form.Text>
+                            </Form.Group>
+
+                            {/* Password and Max Clicks Fields */}
+                            <Form.Group className="mb-3">
+                                <Row>
+                                    <Col>
+                                        <Form.Label
+                                            style={{
+                                                color: "#f0f0f0",
+                                                fontWeight: "100",
+                                                fontSize: "1rem",
+                                                letterSpacing: "0.06em",
+                                                textTransform: "uppercase",
+                                            }}
+                                        >
+                                            Password
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            name="password"
+                                            placeholder="Optional"
+                                            value={formData.password}
+                                            onChange={handleChange}
+                                            style={{
+                                                background: "rgba(255, 255, 255, 0.1)",
+                                                border: "1px solid #fff",
+                                                color: "#2e4053",
+                                                fontWeight: "700",
+                                                fontSize: "16px",
+                                                outline: "none",
+                                                padding: "10px",
+                                                borderRadius: "8px",
+                                            }}
+                                        />
+                                    </Col>
+                                    <Col>
+                                        <Form.Label
+                                            style={{
+                                                color: "#f0f0f0",
+                                                fontWeight: "100",
+                                                fontSize: "1rem",
+                                                letterSpacing: "0.06em",
+                                                textTransform: "uppercase",
+                                            }}
+                                        >
+                                            Max Clicks
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            name="maxClicks"
+                                            placeholder="Optional"
+                                            value={formData.maxClicks}
+                                            onChange={handleChange}
+                                            style={{
+                                                background: "rgba(255, 255, 255, 0.1)",
+                                                border: "1px solid #fff",
+                                                color: "#2e4053",
+                                                fontWeight: "700",
+                                                fontSize: "16px",
+                                                outline: "none",
+                                                padding: "10px",
+                                                borderRadius: "8px",
+                                            }}
+                                        />
+                                    </Col>
+                                </Row>
+                            </Form.Group>
+
+                            {/* Submit Button */}
+                            <div className="text-center">
+                                <Button
+                                    variant="light"
+                                    type="submit"
+                                    className="px-5"
+                                    style={{
+                                        background: "#1d8348",
+                                        border: "none",
+                                        borderRadius: "30px",
+                                        color: "#fff",
+                                    }}
+                                >
+                                    Snap It
+                                </Button>
+                            </div>
+                        </Form>
+                        <ToastContainer />
+                    </Col>
+                </Row>
+            </Container>
         </div>
     );
 };
