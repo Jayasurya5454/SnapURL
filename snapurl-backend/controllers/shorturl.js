@@ -15,8 +15,8 @@ module.exports.createShortUrl = async (req, res) => {
           return res.status(400).json({ message: "Custom name already in use. Try another name." });
         }
       }
-  
-      const qrcode = await QRCode.toDataURL(originalUrl);
+      qrurl  = "https://snapurls.onrender.com/"+shortUrl;
+      const qrcode = await QRCode.toDataURL(qrurl);
   
       const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
   
