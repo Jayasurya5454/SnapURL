@@ -5,6 +5,10 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Confetti from "react-confetti";
 import backgroundImage from "../../assets/backgroundUrl.png";
+import githubLogo from '../../assets/githublogo.png';
+import linkedinLogo from '../../assets/linkedin.svg';
+import mediumLogo from '../../assets/medium-svgrepo-com.svg';
+
 
 const Result = () => {
     const location = useLocation();
@@ -141,7 +145,7 @@ const Result = () => {
                                 onClick={() => window.open("https://github.com/Jayasurya5454", "_blank")}
                             >
                                 <img
-                                    src="src/assets/githublogo.png"
+                                    src={githubLogo}
                                     alt="github"
                                     style={{ width: "28px", height: "28px" }}
                                 />
@@ -159,7 +163,7 @@ const Result = () => {
 
                             >
                                 <img
-                                    src="src/assets/linkedin.svg"
+                                    src={linkedinLogo}
                                     alt="Website"
                                     style={{ width: "28px", height: "28px" }}
                                 />
@@ -176,7 +180,7 @@ const Result = () => {
                                 onClick={() => window.open("https://jayasurya5454.medium.com/", "_blank")}
                             >
                                 <img
-                                    src="src/assets/medium-svgrepo-com.svg"
+                                    src={mediumLogo}
                                     alt="Website"
                                     style={{ width: "28px", height: "28px" }}
                                 />
