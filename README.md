@@ -4,7 +4,6 @@ SnapURL is a full stack application designed to help users shorten URLs quickly 
 ## Preview - Live in the Market
 You can preview the application [SnapURL](https://snappedurl.netlify.app).
 
-
 ## Features
 
 - Shorten long URLs
@@ -56,12 +55,16 @@ You can preview the application [SnapURL](https://snappedurl.netlify.app).
 
 ## Website Screenshots
 
- ### Dashboard view![SnapURL Screenshot](assets/s1.png)<br></br>
- ### Result view![SnapURL Screenshot](assets/s2.png)
-### Password Verifcation view![SnapURL Screenshot](assets/s2.png)
+### Dashboard view
+![SnapURL Screenshot](assets/s1.png)
 
+### Result view
+![SnapURL Screenshot](assets/s2.png)
 
-## Preview
+### Password Verification view
+![SnapURL Screenshot](assets/s3.png)
+
+## Deployment Status
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/900b745e-58ee-4c64-bb6c-3d4b56b14cac/deploy-status)](https://app.netlify.com/sites/snappedurl/deploys)
 
