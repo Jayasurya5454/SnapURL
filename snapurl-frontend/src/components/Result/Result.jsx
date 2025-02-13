@@ -5,20 +5,25 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Confetti from "react-confetti";
 import backgroundImage from "../../assets/backgroundUrl.png";
+import githubLogo from '../../assets/githublogo.png';
+import linkedinLogo from '../../assets/linkedin.svg';
+import mediumLogo from '../../assets/medium-svgrepo-com.svg';
+
 
 const Result = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { shortUrl, qrCode } = location.state || {};
-    const formattedShortUrl = shortUrl ? `https://snapurls.onrender.com/${shortUrl}` : null;
+    const formattedShortUrl = shortUrl ? `https://snappedurl.onrender.com/${shortUrl}` : null;
     const [showConfetti, setShowConfetti] = useState(true);
+
     const downloadAsPdf = () => {
         const qrImage = document.createElement("a");
-        qrImage.href = qrCode; // The QR code URL passed via props or state
-        qrImage.download = "QRCode.png"; // Default name for the downloaded file
+        qrImage.href = qrCode; 
+        qrImage.download = "Snapurl.png"; 
         qrImage.click();
     };
-    
+
     const handleCopy = () => {
         if (formattedShortUrl) {
             navigator.clipboard.writeText(formattedShortUrl);
@@ -137,12 +142,13 @@ const Result = () => {
                                     fontSize: "18px",
                                     cursor: "pointer",
                                 }}
+                                onClick={() => window.open("https://github.com/Jayasurya5454", "_blank")}
                             >
                                 <img
-                                                                     src="src/assets/githublogo.png"
-                                                        alt="github"
-                                                        style={{ width: "28px", height: "28px" }}
-        />
+                                    src={githubLogo}
+                                    alt="github"
+                                    style={{ width: "28px", height: "28px" }}
+                                />
                             </button>
                             <button
                                 style={{
@@ -153,12 +159,14 @@ const Result = () => {
                                     fontSize: "18px",
                                     cursor: "pointer",
                                 }}
+                                onClick={() => window.open("https://www.linkedin.com/in/jayasurya5454", "_blank")}
+
                             >
                                 <img
-                                     src="src/assets/linkedin.svg"
-                                      alt="Website"
-                                style={{ width: "28px", height: "28px" }}
-        />
+                                    src={linkedinLogo}
+                                    alt="Website"
+                                    style={{ width: "28px", height: "28px" }}
+                                />
                             </button>
                             <button
                                 style={{
@@ -169,11 +177,13 @@ const Result = () => {
                                     fontSize: "18px",
                                     cursor: "pointer",
                                 }}
+                                onClick={() => window.open("https://jayasurya5454.medium.com/", "_blank")}
                             >
                                 <img
-                                     src="src/assets/medium-svgrepo-com.svg"
-                                      alt="Website"
-                                style={{ width: "28px", height: "28px" }}/>
+                                    src={mediumLogo}
+                                    alt="Website"
+                                    style={{ width: "28px", height: "28px" }}
+                                />
                             </button>
                         </div>
                         <div>
@@ -186,7 +196,7 @@ const Result = () => {
                                     marginRight: "10px",
                                     cursor: "pointer",
                                 }}
-                                onClick={() => downloadAsPdf() }
+                                onClick={() => downloadAsPdf()}
                             >
                                 Download QR
                             </Button>

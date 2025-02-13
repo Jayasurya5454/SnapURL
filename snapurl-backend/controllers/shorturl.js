@@ -4,7 +4,7 @@ const QRCode = require("qrcode");
 const bcrypt = require("bcrypt");
 
 module.exports.createShortUrl = async (req, res) => {
-    const { originalUrl, customName, password, maxClicks } = req.body;
+    const { originalUrl, customName, password, maxClicks ,user} = req.body;
   
     const shortUrl = customName || Math.random().toString(36).substr(2, 5);
   
@@ -15,8 +15,8 @@ module.exports.createShortUrl = async (req, res) => {
           return res.status(400).json({ message: "Custom name already in use. Try another name." });
         }
       }
-  
-      const qrcode = await QRCode.toDataURL(originalUrl);
+      qrurl  = "https://snappedurl.onrender.com/"+shortUrl;
+      const qrcode = await QRCode.toDataURL(qrurl);
   
       const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
   
@@ -27,6 +27,7 @@ module.exports.createShortUrl = async (req, res) => {
         password: hashedPassword,
         maxClicks,
         qrcode,
+        createdBy: user || "Anonymous",
       });
   
       await newShortUrl.save();
@@ -56,7 +57,7 @@ module.exports.getShortUrl = async (req, res) => {
     
         if (shortUrlEntry.password) {
           if (!password) {
-            return res.redirect('http://localhost:5173/validate');
+            return res.redirect('https://snappedurl.netlify.app/validate');
         }
           const isPasswordValid = await bcrypt.compare(password, shortUrlEntry.password);
           if (!isPasswordValid) {
