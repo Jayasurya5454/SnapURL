@@ -18,7 +18,13 @@ module.exports.getShortUrlRecord = async (req, res) => {
             }
         }
 
-        // Return the original URL
+        if (shortUrlEntry.maxClicks && shortUrlEntry.clicks >= shortUrlEntry.maxClicks) {
+            return res.status(403).json({ message: "Click limit exceeded." });
+        }
+
+        shortUrlEntry.clicks += 1;
+        await shortUrlEntry.save();
+
         res.status(200).json({
             originalUrl: shortUrlEntry.originalUrl,
         });
