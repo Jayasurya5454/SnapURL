@@ -13,6 +13,14 @@ const shortUrlSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    password: {
+        type: String,
+        required: false,
+    },
+    maxClicks: {
+        type: Number,
+        required: false,
+    },
     qrcode: {
         type: String,
         required: false,
