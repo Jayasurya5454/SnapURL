@@ -5,56 +5,50 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Dashboard = () => {
+const Validate = () => {
     const [formData, setFormData] = useState({
-        originalUrl: "",
         customName: "",
         password: "",
-        maxClicks: "",
     });
 
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        if (name === "customName" && /\s/.test(value)) {
-            toast.error("Custom alias cannot contain spaces.", { autoClose: 3000 });
-            return;
-        }
-
         setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shortUrl`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
-
+            const response = await fetch(
+                `${import.meta.env.VITE_BACKEND_URL}/api/validate/${formData.customName}?password=${formData.password}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+    
             const result = await response.json();
-
+            console.log(result);
+    
             if (response.ok) {
-                toast.success("SnapURL created successfully!", { autoClose: 1000 });
+                toast.success("Redirecting to the original URL...", { autoClose: 1000 });
                 setTimeout(() => {
-                    navigate("/result", { state: { shortUrl: result.shortUrl, qrCode: result.qrcode } });
-                }, 3000);
-            } else if (result.message === "Custom name already in use. Try another name.") {
-                toast.error("Custom alias already exists! Please choose another alias.", { autoClose: 4000 });
+                    window.location.href = result.originalUrl;
+                }, 2000);
             } else {
-                toast.error(result.message || "An error occurred.", { autoClose: 3000 });
+                toast.error(result.message || "Invalid alias or password.", { autoClose: 3000 });
             }
         } catch (error) {
             console.error("Error:", error);
             toast.error("Failed to connect to the server.", { autoClose: 3000 });
         }
     };
+    
 
     return (
         <div
@@ -94,9 +88,10 @@ const Dashboard = () => {
                                 textTransform: "uppercase",
                             }}
                         >
-                            SnapURL
+                            Verify URL Access
                         </h3>
                         <Form onSubmit={handleSubmit}>
+                            {/* Alias Field */}
                             <Form.Group className="mb-3">
                                 <Form.Label
                                     style={{
@@ -107,46 +102,15 @@ const Dashboard = () => {
                                         textTransform: "uppercase",
                                     }}
                                 >
-                                    Enter your long URL
-                                </Form.Label>
-                                <Form.Control
-                                    type="url"
-                                    name="originalUrl"
-                                    placeholder="https://your-long-url.com"
-                                    value={formData.originalUrl}
-                                    onChange={handleChange}
-                                    required
-                                    style={{
-                                        flex: 1,
-                                        background: "rgba(255, 255, 255, 0.1)",
-                                        border: "1px solid #fff",
-                                        color: "#2e4053",
-                                        fontWeight: "700",
-                                        fontSize: "16px",
-                                        outline: "none",
-                                        padding: "10px",
-                                        borderRadius: "8px",
-                                    }}
-                                />
-                            </Form.Group>
-
-                            <Form.Group className="mb-3">
-                                <Form.Label
-                                    style={{
-                                        color: "#f0f0f0",
-                                        fontWeight: "100",
-                                        fontSize: "1rem",
-                                        letterSpacing: "0.06em",
-                                        textTransform: "uppercase",
-                                    }}
-                                >
-                                    Custom Alias
+                                    Enter Custom Alias
                                 </Form.Label>
                                 <Form.Control
                                     type="text"
                                     name="customName"
+                                    placeholder="Enter your custom alias"
                                     value={formData.customName}
                                     onChange={handleChange}
+                                    required
                                     style={{
                                         background: "rgba(255, 255, 255, 0.1)",
                                         border: "1px solid #fff",
@@ -158,76 +122,42 @@ const Dashboard = () => {
                                         borderRadius: "8px",
                                     }}
                                 />
-                                <Form.Text className="text-muted text-light">
-                                    Leave blank for random URL slug.
-                                </Form.Text>
                             </Form.Group>
 
+                            {/* Password Field */}
                             <Form.Group className="mb-3">
-                                <Row>
-                                    <Col>
-                                        <Form.Label
-                                            style={{
-                                                color: "#f0f0f0",
-                                                fontWeight: "100",
-                                                fontSize: "1rem",
-                                                letterSpacing: "0.06em",
-                                                textTransform: "uppercase",
-                                            }}
-                                        >
-                                            Password
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="password"
-                                            name="password"
-                                            placeholder="Optional"
-                                            value={formData.password}
-                                            onChange={handleChange}
-                                            style={{
-                                                background: "rgba(255, 255, 255, 0.1)",
-                                                border: "1px solid #fff",
-                                                color: "#2e4053",
-                                                fontWeight: "700",
-                                                fontSize: "16px",
-                                                outline: "none",
-                                                padding: "10px",
-                                                borderRadius: "8px",
-                                            }}
-                                        />
-                                    </Col>
-                                    <Col>
-                                        <Form.Label
-                                            style={{
-                                                color: "#f0f0f0",
-                                                fontWeight: "100",
-                                                fontSize: "1rem",
-                                                letterSpacing: "0.06em",
-                                                textTransform: "uppercase",
-                                            }}
-                                        >
-                                            Max Clicks
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="number"
-                                            name="maxClicks"
-                                            placeholder="Optional"
-                                            value={formData.maxClicks}
-                                            onChange={handleChange}
-                                            style={{
-                                                background: "rgba(255, 255, 255, 0.1)",
-                                                border: "1px solid #fff",
-                                                color: "#2e4053",
-                                                fontWeight: "700",
-                                                fontSize: "16px",
-                                                outline: "none",
-                                                padding: "10px",
-                                                borderRadius: "8px",
-                                            }}
-                                        />
-                                    </Col>
-                                </Row>
+                                <Form.Label
+                                    style={{
+                                        color: "#f0f0f0",
+                                        fontWeight: "100",
+                                        fontSize: "1rem",
+                                        letterSpacing: "0.06em",
+                                        textTransform: "uppercase",
+                                    }}
+                                >
+                                    Enter Password
+                                </Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    name="password"
+                                    placeholder="Enter password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    required
+                                    style={{
+                                        background: "rgba(255, 255, 255, 0.1)",
+                                        border: "1px solid #fff",
+                                        color: "#2e4053",
+                                        fontWeight: "700",
+                                        fontSize: "16px",
+                                        outline: "none",
+                                        padding: "10px",
+                                        borderRadius: "8px",
+                                    }}
+                                />
                             </Form.Group>
 
+                            {/* Submit Button */}
                             <div className="text-center">
                                 <Button
                                     variant="light"
@@ -240,7 +170,7 @@ const Dashboard = () => {
                                         color: "#fff",
                                     }}
                                 >
-                                    Snap It
+                                    Verify
                                 </Button>
                             </div>
                         </Form>
@@ -252,4 +182,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Validate;
