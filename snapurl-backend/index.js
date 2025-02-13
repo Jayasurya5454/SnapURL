@@ -11,11 +11,6 @@ app.use(express.json());
 const cron = require('node-cron');
 
 
-app.use(cors({
-    origin: ['http://localhost:5173'], // Add your frontend URL here
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true, // Allow credentials if necessary
-}));
 
 
 app.use('/api/health', ()=> {
