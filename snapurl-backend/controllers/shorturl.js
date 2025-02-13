@@ -61,8 +61,8 @@ module.exports.getShortUrl = async (req, res) => {
         // Check if password is required and validate it
         if (shortUrlEntry.password) {
           if (!password) {
-            return res.status(401).send("Password required");
-          }
+            return res.redirect('http://localhost:5173/validate');
+        }
           const isPasswordValid = await bcrypt.compare(password, shortUrlEntry.password);
           if (!isPasswordValid) {
             return res.status(401).send("Invalid password");
@@ -78,4 +78,25 @@ module.exports.getShortUrl = async (req, res) => {
         console.error(err);
         res.status(500).send("Server error");
       }
+};
+
+module.exports.getShortUrlRecord = async (req, res) => {
+    try {
+        const { customName } = req.params;
+
+        // Find the short URL entry by customName
+        const shortUrlEntry = await ShortUrl.findOne({ shortUrl: customName });
+        if (!shortUrlEntry) {
+            return res.status(404).json({ message: "Alias not found." });
+        }
+
+        // Return the short URL record without sensitive data
+        res.status(200).json({
+            originalUrl: shortUrlEntry.originalUrl,
+            password: shortUrlEntry.password ? true : false, // Indicate if password is set
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
 };
