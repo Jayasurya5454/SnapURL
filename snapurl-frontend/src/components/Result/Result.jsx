@@ -9,11 +9,10 @@ import githubLogo from '../../assets/githublogo.png';
 import linkedinLogo from '../../assets/linkedin.svg';
 import mediumLogo from '../../assets/medium-svgrepo-com.svg';
 
-
 const Result = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { shortUrl, qrCode } = location.state || {};
+    const { shortUrl, qrCode, userId } = location.state || {};
     const formattedShortUrl = shortUrl ? `https://snappedurl.onrender.com/${shortUrl}` : null;
     const [showConfetti, setShowConfetti] = useState(true);
 
@@ -30,6 +29,15 @@ const Result = () => {
             toast.success("Shortened URL copied to clipboard!", { autoClose: 3000 });
         } else {
             toast.error("No URL available to copy.", { autoClose: 3000 });
+        }
+    };
+
+    const handleAnalytics = () => {
+        if (userId) {
+            navigate(`/analytics`, { state: { userId: userId } });
+            toast.success("Navigating to Analytics!", { autoClose: 3000 });
+        } else {
+            toast.error("No user ID available for analytics.", { autoClose: 3000 });
         }
     };
 
@@ -77,6 +85,7 @@ const Result = () => {
                                 padding: "10px 15px",
                                 borderRadius: "8px",
                                 marginBottom: "20px",
+                                position: "relative",
                             }}
                         >
                             <input
@@ -105,7 +114,9 @@ const Result = () => {
                             >
                                 📋
                             </button>
+                            
                         </div>
+                       
                         <div
                             style={{
                                 marginBottom: "20px",
@@ -160,7 +171,6 @@ const Result = () => {
                                     cursor: "pointer",
                                 }}
                                 onClick={() => window.open("https://www.linkedin.com/in/jayasurya5454", "_blank")}
-
                             >
                                 <img
                                     src={linkedinLogo}
@@ -212,6 +222,40 @@ const Result = () => {
                             >
                                 Open Snaped URL
                             </Button>
+                            {userId && (
+                                <Button
+                                    style={{
+                                        background: "#1abc9c",
+                                        border: "none",
+                                        padding: "10px 20px",
+                                        borderRadius: "30px",
+                                        cursor: "pointer",
+                                        marginLeft: "10px",
+                                        position: "relative",
+                                    }}
+                                    onClick={handleAnalytics}
+                                >
+                                    Analytics
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            top: "-10px",
+                                            right: "-10px",
+                                            background: "#e74c3c",
+                                            borderRadius: "50%",
+                                            width: "20px",
+                                            height: "20px",
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            color: "#fff",
+                                            fontSize: "12px",
+                                        }}
+                                    >
+                                        1
+                                    </div>
+                                </Button>
+                            )}
                         </div>
                     </>
                 ) : (
