@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Loader from './Loader';
 import {
   LineChart,
   Line,
@@ -130,7 +131,11 @@ const Analytics = () => {
   }, [userId, navigate]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+        <Loader className="display-1"/>
+      </div>
+    );
   }
 
   return (
