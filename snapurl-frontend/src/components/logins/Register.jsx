@@ -39,7 +39,7 @@ const Register = () => {
     try {
       await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       toast.success("Registration successful!");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       toast.error("Email already in use. Please login.");
     }
@@ -50,7 +50,7 @@ const Register = () => {
     try {
       await signInWithPopup(auth, provider);
       toast.success("Successfully signed in with Google!");
-      navigate("/login"); 
+      navigate("/"); 
     } catch (error) {
       toast.error("Google Sign-In failed. Please try again.");
     }
@@ -166,7 +166,7 @@ const Register = () => {
         </button>
         <p className="text-center text-muted">
           Already have an account?{" "}
-          <a href="/login" className="text-primary text-decoration-none">
+          <a href="/" className="text-primary text-decoration-none">
             Login
           </a>
         </p>

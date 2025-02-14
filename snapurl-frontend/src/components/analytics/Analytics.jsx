@@ -44,7 +44,7 @@ const Analytics = () => {
         console.log("Fetched Analytics Data:", result);
 
         if (result.stats.totalUrls === 0) {
-          navigate("/", { state: { userId: userId } });
+          navigate("/dashboard", { state: { userId: userId } });
           return;
         }
 
@@ -71,7 +71,7 @@ const Analytics = () => {
             backgroundColor: "#f0f8ff",
           },
           {
-            label: "Most Clicked URL Clicks",
+            label: "Highest Clicks",
             value: result.stats.mostClickedUrlClicks || 0,
             change: result.stats.mostClickedUrlClicksChange || "+0%",
             icon: <Users className="stat-icon" />,
@@ -103,7 +103,7 @@ const Analytics = () => {
             value: <p style={{ color: "#273746" }}><strong>Snap Your URL</strong></p>,
             change: "",
             icon: <Home className="stat-icon" style={{ color: "#FF5733" }} />,
-            onClick: () => navigate("/", { state: { userId: userId } }),
+            onClick: () => navigate("/dashboard", { state: { userId: userId } }),
           },
         ];
 

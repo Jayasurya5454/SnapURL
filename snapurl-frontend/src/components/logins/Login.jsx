@@ -110,6 +110,12 @@ const Login = () => {
             Sign in with Google
           </button>
           <p className="text-center text-muted mt-3">
+            Continue without login -- {'> '}
+            <a href="dashboard" className="text-primary">
+              SnapURL
+            </a>
+          </p>
+          <p className="text-center text-muted mt-3">
             Don’t have an account?{' '}
             <a href="register" className="text-primary">
               Register
