@@ -19,6 +19,7 @@ app.use('/api/health', ()=> {
 app.use('/',require('./routes/shorturl.js'));
 app.use('/api/shorturl', require('./routes/shorturl.js'));
 app.use('/api/validate', require('./routes/validate.js'));
+app.use('/api/analytics', require('./routes/analytics.js'));
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');

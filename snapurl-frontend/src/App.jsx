@@ -5,6 +5,7 @@ import Login from './components/logins/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import Result from './components/Result/Result';
 import Validate from './components/passwordCheck/Password';
+import Analytics from './components/analytics/Analytics'
 function App() {
 
 
@@ -16,6 +17,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/result" element={<Result />} />
       <Route path="/validate" element={<Validate />} />
+      <Route path="/analytics" element={<Analytics />} />
     </Routes>
   </Router>
 );

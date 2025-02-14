@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import backgroundImage from "../../assets/backgroundUrl.png";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
+    const location = useLocation();
+    const user = location.state?.userId || null; 
     const [formData, setFormData] = useState({
         originalUrl: "",
         customName: "",
         password: "",
         maxClicks: "",
+        user: user,
     });
 
     const navigate = useNavigate();
@@ -43,7 +46,7 @@ const Dashboard = () => {
             if (response.ok) {
                 toast.success("SnapURL created successfully!", { autoClose: 1000 });
                 setTimeout(() => {
-                    navigate("/result", { state: { shortUrl: result.shortUrl, qrCode: result.qrcode } });
+                    navigate("/result", { state: { shortUrl: result.shortUrl, qrCode: result.qrcode,userId:user } });
                 }, 3000);
             } else if (result.message === "Custom name already in use. Try another name.") {
                 toast.error("Custom alias already exists! Please choose another alias.", { autoClose: 4000 });
