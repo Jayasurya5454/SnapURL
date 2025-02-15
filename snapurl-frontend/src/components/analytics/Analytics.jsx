@@ -26,6 +26,7 @@ const Analytics = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const userId = location.state?.userId;
+  console.log(userId);
   const [data, setData] = useState({
     stats: [],
     urlsOverTime: [],
@@ -218,7 +219,7 @@ const Analytics = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                https://snappedurl.onrender.com/{url.shortUrl}
+;                https://snappedurl.onrender.com/{url.shortUrl}
               </a>
             </p>
             <p>
