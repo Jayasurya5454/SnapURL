@@ -26,7 +26,6 @@ const Analytics = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const userId = location.state?.userId;
-  console.log(userId);
   const [data, setData] = useState({
     stats: [],
     urlsOverTime: [],
