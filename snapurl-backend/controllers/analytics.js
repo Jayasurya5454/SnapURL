@@ -49,6 +49,7 @@ module.exports.getAnalytics = async (req, res) => {
             qrCode: url.qrcode,
             createdAt: url.createdAt,
             clicks: url.clicks,
+            maxClicks: url.maxClicks,
         }));
 
         res.json({
