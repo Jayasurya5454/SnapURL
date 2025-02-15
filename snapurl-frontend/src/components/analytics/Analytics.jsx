@@ -230,7 +230,7 @@ const Analytics = () => {
             </p>
             <img src={url.qrCode} alt="QR Code" className="qr-code" />
             <p><strong>URL Hits:</strong> {url.clicks}</p>
-            <p><strong>Maximum Hits Allowed:</strong> {url.maxClicks ? url.maxClicks : "Unlimited"}</p>
+            <p><strong>Maximum Hits Allowed:</strong> {url.maxClicks || "Unlimited"}</p>
             <p>
               <strong>Password Protected:</strong>{" "}
               {url.password ? "Yes" : "No"}
