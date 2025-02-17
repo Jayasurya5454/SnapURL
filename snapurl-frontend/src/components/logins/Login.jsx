@@ -35,7 +35,6 @@ const Login = () => {
       const userCredential = await signInWithPopup(auth, provider);
       toast.success("Google Sign-In successful!");
       // Redirect to home or dashboard page
-      console.log(userCredential.user.uid);
       navigate("/analytics", { state: { userId: userCredential.user.uid } });
     } catch (error) {
       toast.error("Google Sign-In failed. Please try again.");

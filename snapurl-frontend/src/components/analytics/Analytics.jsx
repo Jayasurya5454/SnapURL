@@ -52,49 +52,49 @@ const Analytics = () => {
           {
             label: "Total URLs",
             value: result.stats.totalUrls || 0,
-            change: result.stats.totalUrlsChange || "+0%",
+            change: result.stats.totalUrlsChange || " ",
             icon: <BarChart2 className="stat-icon" />,
             backgroundColor: "#f0f8ff",
           },
           {
             label: "Total Clicks",
             value: result.stats.totalClicks || 0,
-            change: result.stats.totalClicksChange || "+0%",
+            change: result.stats.totalClicksChange || "",
             icon: <User className="stat-icon" />,
             backgroundColor: "#f0f8ff",
           },
           {
             label: "Most Clicked Alias",
             value: result.stats.mostClickedUrl || "N/A",
-            change: result.stats.mostClickedUrlChange || "+0%",
+            change: result.stats.mostClickedUrlChange || "",
             icon: <DollarSign className="stat-icon" />,
             backgroundColor: "#f0f8ff",
           },
           {
             label: "Highest Clicks",
             value: result.stats.mostClickedUrlClicks || 0,
-            change: result.stats.mostClickedUrlClicksChange || "+0%",
+            change: result.stats.mostClickedUrlClicksChange || "",
             icon: <Users className="stat-icon" />,
             backgroundColor: "#f0f8ff",
           },
           {
             label: "Avg Clicks/URL",
             value: result.stats.averageClicksPerUrl || 0,
-            change: result.stats.averageClicksPerUrlChange || "+0%",
+            change: result.stats.averageClicksPerUrlChange || "",
             icon: <BarChart2 className="stat-icon" />,
             backgroundColor: "#f0f8ff",
           },
           {
             label: "Password-Protected URLs",
             value: result.stats.passwordProtectedUrls || 0,
-            change: result.stats.passwordProtectedUrlsChange || "+0%",
+            change: result.stats.passwordProtectedUrlsChange || " ",
             icon: <Lock className="stat-icon" />,
             backgroundColor: "#f0f8ff",
           },
           {
             label: "QR Code URLs",
             value: result.stats.qrCodeUrls || 0,
-            change: result.stats.qrCodeUrlsChange || "+0%",
+            change: result.stats.qrCodeUrlsChange || " ",
             icon: <QrCode className="stat-icon" />,
             backgroundColor: "#f0f8ff",
           },
@@ -113,10 +113,11 @@ const Analytics = () => {
           clicksOverTime: result.clicksOverTime || [],
           detailedUrls: result.detailedUrls || [],
         });
-        toast.success("Click Snap Your URL card to Snap it!", {
-          position: "top-right",
-          autoClose: 9000,
-          
+        toast.info("Click Snap Your URL card to Snap it!", {
+          position: "bottom-center",
+          autoClose: 20000,
+          theme: "dark",
+          color: "#FF5733",
           pauseOnHover: true,
           draggable: true,
         });

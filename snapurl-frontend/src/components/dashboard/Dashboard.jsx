@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import backgroundImage from "../../assets/backgroundUrl.png";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const Dashboard = () => {
     const location = useLocation();
@@ -15,8 +16,23 @@ const Dashboard = () => {
         maxClicks: "",
         user: user,
     });
+    const [likeCount, setLikeCount] = useState(0);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchLikeCount = async () => {
+            try {
+                const likeResponse = await axios.get('https://likeme-backend-fxrs.onrender.com/api/snapurl/count');
+                setLikeCount(likeResponse.data.count);
+                localStorage.setItem('likeCount', likeResponse.data.count);
+            } catch (error) {
+                console.error('Error updating like count:', error.response || error.message || error);
+            }
+        };
+
+        fetchLikeCount();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -46,7 +62,7 @@ const Dashboard = () => {
             if (response.ok) {
                 toast.success("SnapURL created successfully!", { autoClose: 1000 });
                 setTimeout(() => {
-                    navigate("/result", { state: { shortUrl: result.shortUrl, qrCode: result.qrcode,userId:user } });
+                    navigate("/result", { state: { shortUrl: result.shortUrl, qrCode: result.qrcode, userId: user } });
                 }, 3000);
             } else if (result.message === "Custom name already in use. Try another name.") {
                 toast.error("Custom alias already exists! Please choose another alias.", { autoClose: 4000 });
