@@ -55,7 +55,17 @@ You can preview the application [SnapURL](https://snappedurl.netlify.app).
 
 ## Website Screenshots
 
+## Login & Register
+![SnapURL Screenshot](assets/s4.png)
+![SnapURL Screenshot](assets/s5.png)
+
 ### Dashboard view
+![SnapURL Screenshot](assets/d1.png)
+![SnapURL Screenshot](assets/d2.png)
+![SnapURL Screenshot](assets/storage1.png)
+![SnapURL Screenshot](assets/storage2.png)
+
+### URL Shorting
 ![SnapURL Screenshot](assets/s1.png)
 
 ### Result view
