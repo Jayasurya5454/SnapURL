@@ -51,7 +51,7 @@ You can preview the application [SnapURL](https://snappedurl.netlify.app).
     cd ../snapurl-frontend
     npm start
     ```
-3. Open your browser and navigate to `http://localhost:3000`
+3. Open your browser and navigate to `http://localhost:5173`
 
 ## Website Screenshots
 
