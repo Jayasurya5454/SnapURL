@@ -18,9 +18,16 @@
   }
 }
 
+@media (min-width: 480px) and (max-width: 767px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .stat-card {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 16px;
   padding: 16px;
   background: linear-gradient(135deg, #4f46e5, #818cf8);
@@ -56,6 +63,11 @@
   opacity: 0.8;
 }
 
+.stat-change {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
 .charts-grid {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -65,6 +77,12 @@
 @media (min-width: 768px) {
   .charts-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -90,6 +108,12 @@
 
 @media (min-width: 768px) {
   .url-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .url-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
@@ -100,11 +124,14 @@
   border-radius: 12px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .url-card a {
   color: #4f46e5;
   text-decoration: underline;
+  word-break: break-all;
 }
 
 .qr-code {
@@ -112,6 +139,7 @@
   height: auto;
   margin: 16px 0;
   border-radius: 8px;
+  align-self: center;
 }
 
 .url-card p {
@@ -148,7 +176,7 @@
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   padding: 32px;
-  width: 100%;
+  width: 90%;
   max-width: 450px;
   position: relative;
   overflow: hidden;
@@ -273,7 +301,46 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Additional Utility Classes */
+/* Additional Responsive Enhancements */
+@media (max-width: 480px) {
+  .delete-modal-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .delete-modal-btn {
+    width: 100%;
+  }
+
+  .analytics-container {
+    padding: 12px;
+  }
+
+  .stat-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .stat-content {
+    flex-direction: column;
+  }
+}
+
+/* Accessibility and Print Styles */
+@media print {
+  .delete-modal-overlay,
+  .stat-card:hover,
+  .delete-modal-btn:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .delete-modal-overlay {
+    display: none;
+  }
+}
+
+/* Utility Classes */
 .text-center {
   text-align: center;
 }
@@ -308,4 +375,87 @@
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+/* Add this to the existing CSS */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 87, 51, 0.4);
+    transform: scale(1);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(255, 87, 51, 0);
+    transform: scale(1.02);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 87, 51, 0);
+    transform: scale(1);
+  }
+}
+
+@keyframes blink-gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.stat-card:nth-last-child(1) {
+  background: linear-gradient(
+    -45deg, 
+    #FF5733,    /* Vibrant orange-red */
+    #FF6B6B,    /* Soft red */
+    #4ECDC4,    /* Teal */
+    #45B7D1     /* Bright blue */
+  );
+  background-size: 400% 400%;
+  animation: 
+    blink-gradient 10s ease infinite,
+    pulse-glow 2s infinite;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.stat-card:nth-last-child(1)::before {
+  content: '🎯 click me';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255,255,255,0.5);
+  opacity: 0.9;
+  z-index: 2;
+}
+
+.stat-card:nth-last-child(1):hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(224, 209, 209, 0.2);
+}
+
+.stat-card:nth-last-child(1) .stat-content {
+  opacity: 0.2;
+  filter: blur(2px);
+  transition: all 0.3s ease;
+}
+
+.stat-card:nth-last-child(1):hover .stat-content {
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* Responsive adjustments for the Snap Your URL card */
+@media (max-width: 480px) {
+  .stat-card:nth-last-child(1) {
+    background-size: 600% 600%;
+  }
+  
+  .stat-card:nth-last-child(1)::before {
+    font-size: 1rem;
+  }
 }
