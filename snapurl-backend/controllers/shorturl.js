@@ -39,6 +39,23 @@ module.exports.createShortUrl = async (req, res) => {
     }
 };
 
+module.exports.deleteShortUrl = async (req, res) => {
+  try {
+      const { shortUrl } = req.params;
+
+      const shortUrlEntry = await ShortUrl.findOne({ shortUrl });
+      if (!shortUrlEntry) {
+        return res.status(404).json({ message: "Short URL not found" });
+      }
+
+      await ShortUrl.deleteOne({ shortUrl });
+
+      res.status(200).json({ message: "Short URL deleted successfully" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server error", error: err.message });
+    }
+};
 module.exports.getShortUrl = async (req, res) => {
     try {
         const { shortUrl } = req.params;
