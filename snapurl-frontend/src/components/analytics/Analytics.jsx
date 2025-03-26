@@ -254,7 +254,8 @@ const Analytics = () => {
             </button>
             <h2 className="delete-modal-title">Confirm URL Deletion</h2>
             <p className="text-center mb-4">
-              To delete this URL, please enter its custom name:
+              To delete this URL,<br></br> Please enter the custom name:   
+              <strong>{deleteConfirmation.shortUrl}</strong>
             </p>
             <input 
               type="text" 
@@ -263,7 +264,7 @@ const Analytics = () => {
                 ...prev, 
                 customName: e.target.value
               }))}
-              placeholder="Enter custom URL name"
+              placeholder="Retype the  custom name"
               className="delete-modal-input"
             />
             <div className="delete-modal-actions">
